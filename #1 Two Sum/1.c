@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include<time.h>   
+#include <time.h>   
 
 int* twoSum(int* nums, int numsSize, int target) {
 	int i = 0, j = 0, oddIndex = 0, evenIndex = 0, index1 = 0, index2 = 0;
