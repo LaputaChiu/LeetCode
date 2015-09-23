@@ -56,7 +56,7 @@ int myAtoi(char* str) {
 	}
 	
 	free(buf);
-  return sum;
+	return sum;
 }
 
 int main(){
