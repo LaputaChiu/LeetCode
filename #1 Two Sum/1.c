@@ -1,59 +1,48 @@
 #include <stdio.h>
 #include <time.h>   
 
+int FindIndex(int size1, int size2, int *array1, int *array2, int numsSize, int target, int *index1, int *index2){
+	int i = 0, j = 0;
+	for(i=0;i<size1;i++){
+			for(j=0;j<size2;j++){
+				if(array1[i] + array2[j] == target && i != j){
+					*index1 = (array1[numsSize+i] < array2[numsSize+j])?array1[numsSize+i]:array2[numsSize+j];
+					*index2 = (array1[numsSize+i] < array2[numsSize+j])?array2[numsSize+j]:array1[numsSize+i];
+					//printf("%d %d\n",array1[i],array2[j]);
+					return 0;
+				}
+			}
+	 }
+	 return 2;
+}
+
 int* twoSum(int* nums, int numsSize, int target) {
-	int i = 0, j = 0, oddIndex = 0, evenIndex = 0, index1 = 0, index2 = 0;
+	int i = 0, oddIndex = 0, evenIndex = 0;
 	int *oddArray = (int*)malloc(numsSize*sizeof(int)*2);
 	int *evenArray = (int*)malloc(numsSize*sizeof(int)*2);
 	int *out = (int*)malloc(2*sizeof(int));
 	
 	for(i=0;i<numsSize;i++){
 		if(nums[i] % 2 == 0){
-			evenArray[evenIndex] = nums[i]; evenArray[numsSize + evenIndex] = i + 1;
-			//printf("even %d, index %d\n",nums[i],i+1);
-			evenIndex++;
+			evenArray[evenIndex] = nums[i]; evenArray[numsSize + evenIndex] = i + 1; evenIndex++;
 		}else{
-			oddArray[oddIndex] = nums[i]; oddArray[numsSize + oddIndex] = i + 1;
-			//printf("odd %d, index %d\n",nums[i],i+1);
-			oddIndex++;
+			oddArray[oddIndex] = nums[i]; oddArray[numsSize + oddIndex] = i + 1; oddIndex++;
 		}
 	}
 		
 	if(target % 2 == 0){
-		for(i=0;i<oddIndex;i++){
-			for(j=0;j<oddIndex;j++){
-				if(oddArray[i] + oddArray[j] == target && i != j){
-					index1 = (oddArray[numsSize+i] < oddArray[numsSize+j])?oddArray[numsSize+i]:oddArray[numsSize+j];
-					index2 = (oddArray[numsSize+i] < oddArray[numsSize+j])?oddArray[numsSize+j]:oddArray[numsSize+i];
-					//printf("%d %d\n",oddArray[i],oddArray[j]);
-				}
-			}
+		if(FindIndex(oddIndex, oddIndex, oddArray, oddArray, numsSize, target, &out[0], &out[1]) == 0){
+			free(oddArray); free(evenArray); return out;
 		}
-		for(i=0;i<evenIndex;i++){
-			for(j=0;j<evenIndex;j++){
-				if(evenArray[i] + evenArray[j] == target && i != j){
-					index1 = (evenArray[numsSize+i] < evenArray[numsSize+j])?evenArray[numsSize+i]:evenArray[numsSize+j];
-					index2 = (evenArray[numsSize+i] < evenArray[numsSize+j])?evenArray[numsSize+j]:evenArray[numsSize+i];
-					//printf("%d %d\n",evenArray[i],evenArray[j]);
-				}
-			}
+		if(FindIndex(evenIndex, evenIndex, evenArray, evenArray, numsSize, target, &out[0], &out[1]) == 0){
+			free(oddArray); free(evenArray); return out;
 		}
 	}else{
-		for(i=0;i<oddIndex;i++){
-			for(j=0;j<evenIndex;j++){
-				if(oddArray[i] + evenArray[j] == target){
-					index1 = (oddArray[numsSize+i] < evenArray[numsSize+j])?oddArray[numsSize+i]:evenArray[numsSize+j];
-					index2 = (oddArray[numsSize+i] < evenArray[numsSize+j])?evenArray[numsSize+j]:oddArray[numsSize+i];
-					//printf("%d %d\n",oddArray[i],evenArray[j]);
-				}
-			}
+		if(FindIndex(oddIndex, evenIndex, oddArray, evenArray, numsSize, target, &out[0], &out[1]) == 0){
+			free(oddArray); free(evenArray); return out;
 		}
 	}
 	
-	out[0] = index1;
-	out[1] = index2;
-	if(oddArray) free(oddArray);
-	if(evenArray) free(evenArray);
 	return out;
 }
 
