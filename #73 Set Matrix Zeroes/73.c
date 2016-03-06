@@ -91,5 +91,12 @@ int main(){
 		}
 		printf("\n");
 	}
+
+	if(matrix){
+		for(int i=0;i<4;i++){
+			if(matrix[i]) free(matrix[i]);
+		}
+		free(matrix);
+	}
 	return 0;
 }
